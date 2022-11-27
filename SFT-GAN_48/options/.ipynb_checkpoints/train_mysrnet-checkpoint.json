@@ -1,0 +1,80 @@
+{
+  "name": "fea_48-256_mynet*4_OST" //  please remove "debug_" during training
+  , "use_tb_logger": true
+  , "model": "mymodel"
+  , "scale": 4
+  , "gpu_ids": [0]
+
+  , "datasets": {
+    "train": {
+      "name": "ade20k"
+      , "mode": "LRHR"
+      , "dataroot_HR": "/media/zz/Work1/datasets/ade20k_training"
+      , "dataroot_HR_bg": null
+      , "dataroot_LR": null
+      , "subset_file": null
+      , "use_shuffle": true
+      , "n_workers": 0
+      , "batch_size": 16
+      , "HR_size": 96
+      , "use_flip": false
+      , "use_rot": false
+    }
+    , "val": {
+      "name": "ade20k"
+      , "mode": "LRHR"
+      , "dataroot_HR": "/media/zz/Work1/datasets/ade20k_validation_v2"
+      , "dataroot_LR": null
+    }
+  }
+
+  , "path": {
+    "root": "/media/zz/Work1/Pycharm Projects/mysrnet"
+//    , "resume_state":null
+//    , "resume_state": "/media/zz/Work1/Pycharm Projects/mysrnet/experiments/fea_01_mynet*4_OST/training_state/150000.state"
+    , "pretrain_model_G": "trained_model/sft_net_ini.pth"
+//    , "pretrain_model_D": "experiments/seg_05_mynet*4_OST/models/150000_D.pth"
+  }
+
+  , "network_G": {
+    "which_model_G": "sft_arch"
+  }
+  , "network_D": {
+    "which_model_D": "dis_acd"
+  }
+
+  , "train": {
+    "lr_G": 1e-4
+    , "weight_decay_G": 0
+    , "beta1_G": 0.9
+    , "lr_D": 1e-4
+    , "weight_decay_D": 0
+    , "beta1_D": 0.9
+    , "lr_scheme": "MultiStepLR"
+    , "lr_steps": [50000, 100000, 150000, 200000]
+    , "lr_gamma": 0.5
+
+    , "pixel_criterion": "l2"
+    , "pixel_weight": 0.1
+    , "feature_criterion": "l2"
+    , "feature_weight": 1
+    , "gan_type": "vanilla"
+    , "gan_weight": 5e-3
+
+    //for wgan-gp
+     , "D_update_ratio": 1
+     , "D_init_iters": 0
+     , "gp_weight": 10
+
+
+    , "manual_seed": 0
+    , "niter": 3e5
+    , "val_freq":2e3
+  }
+
+  , "logger": {
+    "print_freq": 1e2
+    , "save_checkpoint_freq": 2e3
+
+  }
+}

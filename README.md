@@ -1,1 +1,1 @@
-#下载说明：.pth大文件需单独点击下载（共五个）
+#Instructions：.pth large files need to be downloaded separately
